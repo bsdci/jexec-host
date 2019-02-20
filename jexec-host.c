@@ -1,17 +1,17 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <errno.h>
 #include <err.h>
+#include <errno.h>
 #include <fcntl.h>
 #include <unistd.h>
 
 #include <sys/param.h>
 #include <sys/jail.h>
 
+#include <gelf.h>
 #include <jail.h>
 #include <libelf.h>
-#include <gelf.h>
 
 /*
  * Chek if the given executable is dynamic
@@ -54,10 +54,12 @@ static int is_dynamic(const char *executable) {
 
  cleanup:
     free(elf);
+    close(fd);
     return ret;
 
  error:
     free(elf);
+    close(fd);
     exit(-1);
 }
 
